@@ -115,7 +115,9 @@ int main()
             Vec2& position = intersect.position;
             intersectPoint.setPosition(sf::Vector2f(position.x, position.y));
 
-            line.setSize(sf::Vector2f(window.getSize().y / 2.0f - position.y, 5.0f));
+            Vec2 fromCenter = position - Vec2(window.getSize().x / 2.0, window.getSize().y / 2.0);
+
+            line.setSize(sf::Vector2f(fromCenter.length(), 5.0f));
 
             window.draw(line);
             window.draw(intersectPoint);
