@@ -19,6 +19,16 @@ int main()
     rect.setPosition(sf::Vector2f(600.0f, 100.0f));
     shapes.push_back(&rect);
 
+    sf::ConvexShape convex;
+    convex.setPointCount(5);
+    convex.setPoint(0, sf::Vector2f(300.0f, 600.0f));
+    convex.setPoint(1, sf::Vector2f(450.0f, 610.0f));
+    convex.setPoint(2, sf::Vector2f(420.0f, 680.0f));
+    convex.setPoint(3, sf::Vector2f(330.0f, 700.0f));
+    convex.setPoint(4, sf::Vector2f(300.0f, 650.0f));
+    convex.setFillColor(sf::Color::Blue);
+    shapes.push_back(&convex);
+
     while (window.isOpen())
     {
         sf::Event event;
