@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <vector>
 #include "Vec2.h"
 
@@ -46,15 +45,6 @@ int main()
     rect.setFillColor(sf::Color::Blue);
     rect.setPosition(sf::Vector2f(600.0f, 100.0f));
     shapes.push_back(&rect);
-
-    std::cout << rect.getTransform().transformPoint(rect.getPoint(0)).x << " , "
-              << rect.getTransform().transformPoint(rect.getPoint(0)).y << std::endl;
-    std::cout << rect.getTransform().transformPoint(rect.getPoint(1)).x << " , "
-              << rect.getTransform().transformPoint(rect.getPoint(1)).y << std::endl;
-    std::cout << rect.getTransform().transformPoint(rect.getPoint(2)).x << " , "
-              << rect.getTransform().transformPoint(rect.getPoint(2)).y << std::endl;
-    std::cout << rect.getTransform().transformPoint(rect.getPoint(3)).x << " , "
-              << rect.getTransform().transformPoint(rect.getPoint(3)).y << std::endl;
 
     /*sf::ConvexShape convex;
     convex.setPointCount(5);
