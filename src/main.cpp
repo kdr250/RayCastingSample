@@ -100,7 +100,6 @@ int main()
         }*/
 
         window.draw(rect);
-        window.draw(line);
 
         Vec2 a(rect.getTransform().transformPoint(rect.getPoint(2)).x,
                rect.getTransform().transformPoint(rect.getPoint(2)).y);
@@ -115,6 +114,10 @@ int main()
         {
             Vec2& position = intersect.position;
             intersectPoint.setPosition(sf::Vector2f(position.x, position.y));
+
+            line.setSize(sf::Vector2f(window.getSize().y / 2.0f - position.y, 5.0f));
+
+            window.draw(line);
             window.draw(intersectPoint);
         }
 
