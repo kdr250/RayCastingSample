@@ -111,7 +111,9 @@ int main()
 
             if (first.result)
             {
-                Vec2& position = first.position;
+                Vec2& position  = first.position;
+                sf::Color color = position == point ? sf::Color::Green : sf::Color::Red;
+                intersectPoint.setFillColor(color);
                 intersectPoint.setPosition(sf::Vector2f(position.x, position.y));
                 window.draw(intersectPoint);
             }
