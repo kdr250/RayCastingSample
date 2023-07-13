@@ -106,8 +106,10 @@ int main()
         Vec2 b(rect.getTransform().transformPoint(rect.getPoint(3)).x,
                rect.getTransform().transformPoint(rect.getPoint(3)).y);
 
-        Vec2 c(window.getSize().x / 2.0, window.getSize().y / 2.0);
-        Vec2 d(window.getSize().x / 2.0, 0.0);
+        auto& mousePosition = sf::Mouse::getPosition(window);
+
+        Vec2 c(mousePosition.x, mousePosition.y);
+        Vec2 d(mousePosition.x, 0.0);
 
         auto& intersect = lineIntersect(a, b, c, d);
         if (intersect.result)
@@ -115,9 +117,10 @@ int main()
             Vec2& position = intersect.position;
             intersectPoint.setPosition(sf::Vector2f(position.x, position.y));
 
-            Vec2 fromCenter = position - Vec2(window.getSize().x / 2.0, window.getSize().y / 2.0);
+            Vec2 fromCenter = position - Vec2(mousePosition.x, mousePosition.y);
 
             line.setSize(sf::Vector2f(fromCenter.length(), 5.0f));
+            line.setPosition(sf::Vector2f(mousePosition.x, mousePosition.y));
 
             window.draw(line);
             window.draw(intersectPoint);
