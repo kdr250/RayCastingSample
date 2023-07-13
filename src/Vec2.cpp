@@ -69,6 +69,11 @@ float Vec2::length() const
     return std::sqrtf(x * x + y * y);
 }
 
+float Vec2::crossProduct(const Vec2& other) const
+{
+    return x * other.y - y * other.x;
+}
+
 Vec2& Vec2::normalize()
 {
     float len = length();

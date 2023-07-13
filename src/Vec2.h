@@ -24,6 +24,7 @@ public:
 
     float dist(const Vec2& other) const;
     float length() const;
+    float crossProduct(const Vec2& other) const;
 
     Vec2& normalize();
     Vec2& multiply(const float in);
