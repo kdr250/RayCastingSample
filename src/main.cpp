@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -13,19 +14,19 @@ struct Intersect
 
 Intersect lineIntersect(Vec2& a, Vec2& b, Vec2& c, Vec2& d)
 {
-    Vec2 r    = b - a;
-    Vec2 s    = d - c;
+    Vec2 r = b - a;
+    Vec2 s = d - c;
     float rxs = r.crossProduct(s);
-    Vec2 cma  = c - a;
-    float t   = cma.crossProduct(s) / rxs;
-    float u   = cma.crossProduct(r) / rxs;
+    Vec2 cma = c - a;
+    float t = cma.crossProduct(s) / rxs;
+    float u = cma.crossProduct(r) / rxs;
     if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
     {
-        return {true, Vec2(a.x + t * r.x, a.y + t * r.y)};
+        return { true, Vec2(a.x + t * r.x, a.y + t * r.y) };
     }
     else
     {
-        return {false, Vec2(0.0f, 0.0f)};
+        return { false, Vec2(0.0f, 0.0f) };
     }
 }
 
@@ -58,30 +59,30 @@ int main()
 
     for (int i = 0; i < rect.getPointCount(); i++)
     {
-        auto& point = rect.getTransform().transformPoint(rect.getPoint(i));
+        sf::Vector2f point = rect.getTransform().transformPoint(rect.getPoint(i));
         points.push_back(Vec2(point.x, point.y));
     }
 
     for (int i = 1; i <= rect.getPointCount(); i++)
     {
-        auto& pointA = rect.getTransform().transformPoint(rect.getPoint(i - 1));
-        Vec2 a       = Vec2(pointA.x, pointA.y);
-        auto& pointB = rect.getTransform().transformPoint(rect.getPoint(i % rect.getPointCount()));
-        Vec2 b       = Vec2(pointB.x, pointB.y);
+        sf::Vector2f pointA = rect.getTransform().transformPoint(rect.getPoint(i - 1));
+        Vec2 a = Vec2(pointA.x, pointA.y);
+        sf::Vector2f pointB = rect.getTransform().transformPoint(rect.getPoint(i % rect.getPointCount()));
+        Vec2 b = Vec2(pointB.x, pointB.y);
         lines.push_back(std::make_pair(a, b));
     }
 
     for (int i = 0; i < convex.getPointCount(); i++)
     {
-        auto& point = convex.getTransform().transformPoint(convex.getPoint(i));
+        sf::Vector2f point = convex.getTransform().transformPoint(convex.getPoint(i));
         points.push_back(Vec2(point.x, point.y));
     }
 
     for (int i = 1; i <= convex.getPointCount(); i++)
     {
-        auto& pointA = convex.getTransform().transformPoint(convex.getPoint(i - 1));
-        Vec2 a       = Vec2(pointA.x, pointA.y);
-        auto& pointB =
+        sf::Vector2f pointA = convex.getTransform().transformPoint(convex.getPoint(i - 1));
+        Vec2 a = Vec2(pointA.x, pointA.y);
+        sf::Vector2f pointB =
             convex.getTransform().transformPoint(convex.getPoint(i % convex.getPointCount()));
         Vec2 b = Vec2(pointB.x, pointB.y);
         lines.push_back(std::make_pair(a, b));
@@ -94,14 +95,14 @@ int main()
         {
             switch (event.type)
             {
-                case sf::Event::Closed:
-                    window.close();
+            case sf::Event::Closed:
+                window.close();
 
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                    {
-                        window.close();
-                    }
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    window.close();
+                }
             }
         }
 
@@ -110,21 +111,21 @@ int main()
         window.draw(rect);
         window.draw(convex);
 
-        auto& mousePosition = sf::Mouse::getPosition(window);
-        Vec2 mousePos       = Vec2(mousePosition.x, mousePosition.y);
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+        Vec2 mousePos = Vec2(mousePosition.x, mousePosition.y);
 
         for (auto& point : points)
         {
-            Intersect first = {false, Vec2(0, 0)};
+            Intersect first = { false, Vec2(0, 0) };
             for (auto& l : lines)
             {
-                auto& intersect = lineIntersect(l.first, l.second, mousePos, point);
+                Intersect intersect = lineIntersect(l.first, l.second, mousePos, point);
                 if (intersect.result)
                 {
                     if (first.result)
                     {
                         Vec2 intersectToMouse = mousePos - intersect.position;
-                        Vec2 firstToMouse     = mousePos - first.position;
+                        Vec2 firstToMouse = mousePos - first.position;
                         if (intersectToMouse.length() < firstToMouse.length())
                         {
                             first = intersect;
@@ -154,7 +155,7 @@ int main()
                       Vec2 pos1ToMouse = pos1 - mousePos;
                       Vec2 pos2ToMouse = pos2 - mousePos;
                       return std::atan2(pos1ToMouse.x, pos1ToMouse.y)
-                             < std::atan2(pos2ToMouse.x, pos2ToMouse.y);
+                          < std::atan2(pos2ToMouse.x, pos2ToMouse.y);
                   });
 
         rayCasting = sf::VertexArray(sf::Triangles, 90);
