@@ -46,6 +46,16 @@ int main()
     rect.setPosition(sf::Vector2f(600.0f, 100.0f));
     shapes.push_back(&rect);
 
+    sf::ConvexShape convex;
+    convex.setPointCount(5);
+    convex.setPoint(0, sf::Vector2f(300.0f, 600.0f));
+    convex.setPoint(1, sf::Vector2f(450.0f, 610.0f));
+    convex.setPoint(2, sf::Vector2f(420.0f, 680.0f));
+    convex.setPoint(3, sf::Vector2f(330.0f, 700.0f));
+    convex.setPoint(4, sf::Vector2f(300.0f, 650.0f));
+    convex.setFillColor(sf::Color::Blue);
+    shapes.push_back(&convex);
+
     for (int i = 0; i < rect.getPointCount(); i++)
     {
         auto& point = rect.getTransform().transformPoint(rect.getPoint(i));
@@ -61,8 +71,21 @@ int main()
         lines.push_back(std::make_pair(a, b));
     }
 
-    sf::CircleShape intersectPoint(3.0);
-    intersectPoint.setFillColor(sf::Color::Red);
+    for (int i = 0; i < convex.getPointCount(); i++)
+    {
+        auto& point = convex.getTransform().transformPoint(convex.getPoint(i));
+        points.push_back(Vec2(point.x, point.y));
+    }
+
+    for (int i = 1; i <= convex.getPointCount(); i++)
+    {
+        auto& pointA = convex.getTransform().transformPoint(convex.getPoint(i - 1));
+        Vec2 a       = Vec2(pointA.x, pointA.y);
+        auto& pointB =
+            convex.getTransform().transformPoint(convex.getPoint(i % convex.getPointCount()));
+        Vec2 b = Vec2(pointB.x, pointB.y);
+        lines.push_back(std::make_pair(a, b));
+    }
 
     while (window.isOpen())
     {
@@ -85,6 +108,7 @@ int main()
         window.clear(sf::Color::Black);
 
         window.draw(rect);
+        window.draw(convex);
 
         auto& mousePosition = sf::Mouse::getPosition(window);
         Vec2 mousePos       = Vec2(mousePosition.x, mousePosition.y);
