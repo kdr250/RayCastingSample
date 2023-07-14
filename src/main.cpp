@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <algorithm>
+#include <iostream>
 #include <utility>
 #include <vector>
 #include "Vec2.h"
@@ -36,6 +38,8 @@ int main()
     std::vector<sf::Shape*> shapes;
     std::vector<Vec2> points;
     std::vector<std::pair<Vec2, Vec2>> lines;
+    std::vector<Vec2> candidates;
+    sf::VertexArray rayCasting(sf::Triangles, 90);
 
     sf::RectangleShape rect(sf::Vector2f(100.0f, 100.0f));
     rect.setFillColor(sf::Color::Blue);
@@ -111,13 +115,43 @@ int main()
 
             if (first.result)
             {
-                Vec2& position  = first.position;
-                sf::Color color = position == point ? sf::Color::Green : sf::Color::Red;
-                intersectPoint.setFillColor(color);
-                intersectPoint.setPosition(sf::Vector2f(position.x, position.y));
-                window.draw(intersectPoint);
+                Vec2& position = first.position;
+                if (position == point)
+                {
+                    candidates.push_back(point);
+                }
             }
         }
+
+        std::sort(candidates.begin(),
+                  candidates.end(),
+                  [mousePos](Vec2& pos1, Vec2& pos2)
+                  {
+                      Vec2 pos1ToMouse = pos1 - mousePos;
+                      Vec2 pos2ToMouse = pos2 - mousePos;
+                      return std::atan2(pos1ToMouse.x, pos1ToMouse.y)
+                             < std::atan2(pos2ToMouse.x, pos2ToMouse.y);
+                  });
+
+        rayCasting = sf::VertexArray(sf::Triangles, 90);
+
+        for (int i = 0; i < candidates.size() - 1; i++)
+        {
+            Vec2 pos1 = candidates[i];
+            Vec2 pos2 = candidates[(i + 1) % candidates.size()];
+
+            rayCasting[i * 3 + 0].position = sf::Vector2f(pos1.x, pos1.y);
+            rayCasting[i * 3 + 1].position = sf::Vector2f(pos2.x, pos2.y);
+            rayCasting[i * 3 + 2].position = sf::Vector2f(mousePos.x, mousePos.y);
+
+            rayCasting[i * 3 + 0].color = sf::Color::Yellow;
+            rayCasting[i * 3 + 1].color = sf::Color::Yellow;
+            rayCasting[i * 3 + 2].color = sf::Color::Yellow;
+        }
+
+        window.draw(rayCasting);
+
+        candidates.clear();
 
         window.display();
     }
