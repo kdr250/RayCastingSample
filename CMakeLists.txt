@@ -8,11 +8,11 @@ set(BUILD_SHARED_LIBS OFF)
 FetchContent_Declare(
 	SFML
 	GIT_REPOSITORY https://github.com/SFML/SFML.git
-	GIT_TAG 2.5.1
+	GIT_TAG 2.6.0
 )
 FetchContent_MakeAvailable(SFML)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 include_directories(include)
