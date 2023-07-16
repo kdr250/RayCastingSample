@@ -60,17 +60,6 @@ int main()
     convex.setFillColor(sf::Color::Blue);
     shapes.push_back(&convex);
 
-    sf::Vertex line[] =
-    {
-        sf::Vertex(sf::Vector2f(100.f, 100.f)),
-        sf::Vertex(sf::Vector2f(150.f, 150.f))
-    };
-    sf::Vertex line2[] =
-    {
-        sf::Vertex(sf::Vector2f(100.f, 100.f)),
-        sf::Vertex(sf::Vector2f(150.f, 150.f))
-    };
-
     for (int i = 0; i < rect.getPointCount(); i++)
     {
         sf::Vector2f point = rect.getTransform().transformPoint(rect.getPoint(i));
