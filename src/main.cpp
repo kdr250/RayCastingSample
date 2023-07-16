@@ -60,15 +60,20 @@ int main()
     convex.setFillColor(sf::Color::Blue);
     shapes.push_back(&convex);
 
-    points.push_back(Vec2(window.getSize().x * 0, window.getSize().y * 0));
-    points.push_back(Vec2(window.getSize().x * 1, window.getSize().y * 0));
-    points.push_back(Vec2(window.getSize().x * 1, window.getSize().y * 1));
-    points.push_back(Vec2(window.getSize().x * 0, window.getSize().y * 1));
+    Vec2 windowTopLeft = Vec2(window.getSize().x * 0, window.getSize().y * 0);
+    Vec2 windowTopRight = Vec2(window.getSize().x * 1, window.getSize().y * 0);
+    Vec2 windowBottomRight = Vec2(window.getSize().x * 1, window.getSize().y * 1);
+    Vec2 windowBottomLeft = Vec2(window.getSize().x * 0, window.getSize().y * 1);
 
-    lines.push_back(std::make_pair(Vec2(window.getSize().x * 0, window.getSize().y * 0), Vec2(window.getSize().x * 1, window.getSize().y * 0)));
-    lines.push_back(std::make_pair(Vec2(window.getSize().x * 1, window.getSize().y * 0), Vec2(window.getSize().x * 1, window.getSize().y * 1)));
-    lines.push_back(std::make_pair(Vec2(window.getSize().x * 1, window.getSize().y * 1), Vec2(window.getSize().x * 0, window.getSize().y * 1)));
-    lines.push_back(std::make_pair(Vec2(window.getSize().x * 0, window.getSize().y * 1), Vec2(window.getSize().x * 0, window.getSize().y * 0)));
+    points.push_back(windowTopLeft);
+    points.push_back(windowTopRight);
+    points.push_back(windowBottomRight);
+    points.push_back(windowBottomLeft);
+
+    lines.push_back(std::make_pair(windowTopLeft, windowTopRight));
+    lines.push_back(std::make_pair(windowTopRight, windowBottomRight));
+    lines.push_back(std::make_pair(windowBottomRight, windowBottomLeft));
+    lines.push_back(std::make_pair(windowBottomLeft, windowTopLeft));
 
     for (int i = 0; i < rect.getPointCount(); i++)
     {
@@ -158,17 +163,19 @@ int main()
                 {
                     candidates.push_back(point);
 
-                    Vec2 mouseToPoint = position - mousePos;
-                
-                    float plusX = std::cos(PI * 0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * 0.00001 / 180.0) * mouseToPoint.y;
-                    float plusY = std::sin(PI * 0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * 0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
-                    rotatedLines.push_back(plusDegree);
+                    if (point != windowTopLeft && point != windowTopRight && point != windowBottomRight && point != windowBottomLeft) {
+                        Vec2 mouseToPoint = position - mousePos;
 
-                    float minusX = std::cos(PI * -0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.00001 / 180.0) * mouseToPoint.y;
-                    float minusY = std::sin(PI * -0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
-                    rotatedLines.push_back(minusDegree);
+                        float plusX = std::cos(PI * 0.001 / 180.0) * mouseToPoint.x - std::sin(PI * 0.001 / 180.0) * mouseToPoint.y;
+                        float plusY = std::sin(PI * 0.001 / 180.0) * mouseToPoint.x + std::cos(PI * 0.001 / 180.0) * mouseToPoint.y;
+                        Vec2 plusDegree = mousePos + Vec2(plusX, plusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
+                        rotatedLines.push_back(plusDegree);
+
+                        float minusX = std::cos(PI * -0.001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.001 / 180.0) * mouseToPoint.y;
+                        float minusY = std::sin(PI * -0.001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.001 / 180.0) * mouseToPoint.y;
+                        Vec2 minusDegree = mousePos + Vec2(minusX, minusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
+                        rotatedLines.push_back(minusDegree);
+                    }
                 }
             }
         }
