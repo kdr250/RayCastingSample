@@ -6,6 +6,8 @@
 #include <vector>
 #include "Vec2.h"
 
+#define PI 3.14159265
+
 struct Intersect
 {
     bool result;
@@ -56,6 +58,17 @@ int main()
     convex.setPoint(4, sf::Vector2f(300.0f, 650.0f));
     convex.setFillColor(sf::Color::Blue);
     shapes.push_back(&convex);
+
+    sf::Vertex line[] =
+    {
+        sf::Vertex(sf::Vector2f(100.f, 100.f)),
+        sf::Vertex(sf::Vector2f(150.f, 150.f))
+    };
+    sf::Vertex line2[] =
+    {
+        sf::Vertex(sf::Vector2f(100.f, 100.f)),
+        sf::Vertex(sf::Vector2f(150.f, 150.f))
+    };
 
     for (int i = 0; i < rect.getPointCount(); i++)
     {
@@ -173,6 +186,18 @@ int main()
             rayCasting[i * 3 + 1].color = sf::Color::Yellow;
             rayCasting[i * 3 + 2].color = sf::Color::Yellow;
         }
+
+        Vec2 mouseToZero = Vec2(100.0f, 100.0f) - mousePos;
+        float x = std::cos(PI * -1.0 / 180.0) * mouseToZero.x - std::sin(PI * 90.0 / -1.0) * mouseToZero.y;
+        float y = std::sin(PI * -1.0 / 180.0) * mouseToZero.x + std::cos(PI * 90.0 / -1.0) * mouseToZero.y;
+
+        Vec2 mouseToZeroRotate1 = mousePos + Vec2(x, y);
+
+        line[1].position = sf::Vector2f(mousePosition.x, mousePosition.y);
+        line2[0].position = sf::Vector2f(mouseToZeroRotate1.x, mouseToZeroRotate1.y);
+        line2[1].position = sf::Vector2f(mousePosition.x, mousePosition.y);
+        window.draw(line, 2, sf::Lines);
+        window.draw(line2, 2, sf::Lines);
 
         window.draw(rayCasting);
 
