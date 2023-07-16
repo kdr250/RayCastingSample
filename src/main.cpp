@@ -43,7 +43,7 @@ int main()
     std::vector<std::pair<Vec2, Vec2>> lines;
     std::vector<Vec2> rotatedLines;
     std::vector<Vec2> candidates;
-    sf::VertexArray rayCasting(sf::Triangles, 90);
+    sf::VertexArray rayCasting(sf::Triangles, 900);
 
     sf::RectangleShape rect(sf::Vector2f(100.0f, 100.0f));
     rect.setFillColor(sf::Color::Blue);
@@ -162,12 +162,12 @@ int main()
                 
                     float plusX = std::cos(PI * 0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * 0.00001 / 180.0) * mouseToPoint.y;
                     float plusY = std::sin(PI * 0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * 0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).multiply(1000.0); // TODO: 計算して求めること
+                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).multiply(100000.0); // TODO: 計算して求めること
                     rotatedLines.push_back(plusDegree);
 
                     float minusX = std::cos(PI * -0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.00001 / 180.0) * mouseToPoint.y;
                     float minusY = std::sin(PI * -0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).multiply(1000.0); // TODO: 計算して求めること
+                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).multiply(100000.0); // TODO: 計算して求めること
                     rotatedLines.push_back(minusDegree);
                 }
             }
@@ -213,7 +213,7 @@ int main()
                           < std::atan2(pos2ToMouse.x, pos2ToMouse.y);
                   });
 
-        rayCasting = sf::VertexArray(sf::Triangles, 90);
+        rayCasting = sf::VertexArray(sf::Triangles, 900);
 
         for (int i = 0; i < candidates.size(); i++) 
         {
