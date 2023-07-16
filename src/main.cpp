@@ -168,7 +168,7 @@ int main()
                     float minusX = std::cos(PI * -0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.00001 / 180.0) * mouseToPoint.y;
                     float minusY = std::sin(PI * -0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.00001 / 180.0) * mouseToPoint.y;
                     Vec2 minusDegree = mousePos + Vec2(minusX, minusY).multiply(1000.0); // TODO: 計算して求めること
-                    rotatedLines.push_back(plusDegree);
+                    rotatedLines.push_back(minusDegree);
                 }
             }
         }
