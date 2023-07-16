@@ -41,6 +41,7 @@ int main()
     std::vector<sf::Shape*> shapes;
     std::vector<Vec2> points;
     std::vector<std::pair<Vec2, Vec2>> lines;
+    std::vector<Vec2> rotatedLines;
     std::vector<Vec2> candidates;
     sf::VertexArray rayCasting(sf::Triangles, 90);
 
@@ -157,9 +158,23 @@ int main()
                 if (position == point)
                 {
                     candidates.push_back(point);
+
+                    Vec2 mouseToPoint = position - mousePos;
+                
+                    float plusX = std::cos(PI * 0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * 0.00001 / 180.0) * mouseToPoint.y;
+                    float plusY = std::sin(PI * 0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * 0.00001 / 180.0) * mouseToPoint.y;
+                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).multiply(1000.0); // TODO: 計算して求めること
+                    rotatedLines.push_back(plusDegree);
+
+                    float minusX = std::cos(PI * -0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.00001 / 180.0) * mouseToPoint.y;
+                    float minusY = std::sin(PI * -0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.00001 / 180.0) * mouseToPoint.y;
+                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).multiply(1000.0); // TODO: 計算して求めること
+                    rotatedLines.push_back(plusDegree);
                 }
             }
         }
+
+        std::cout << "rotatedLines.size() = " << rotatedLines.size() << std::endl;
 
         std::sort(candidates.begin(),
                   candidates.end(),
@@ -187,21 +202,10 @@ int main()
             rayCasting[i * 3 + 2].color = sf::Color::Yellow;
         }
 
-        Vec2 mouseToZero = Vec2(100.0f, 100.0f) - mousePos;
-        float x = std::cos(PI * -1.0 / 180.0) * mouseToZero.x - std::sin(PI * 90.0 / -1.0) * mouseToZero.y;
-        float y = std::sin(PI * -1.0 / 180.0) * mouseToZero.x + std::cos(PI * 90.0 / -1.0) * mouseToZero.y;
-
-        Vec2 mouseToZeroRotate1 = mousePos + Vec2(x, y);
-
-        line[1].position = sf::Vector2f(mousePosition.x, mousePosition.y);
-        line2[0].position = sf::Vector2f(mouseToZeroRotate1.x, mouseToZeroRotate1.y);
-        line2[1].position = sf::Vector2f(mousePosition.x, mousePosition.y);
-        window.draw(line, 2, sf::Lines);
-        window.draw(line2, 2, sf::Lines);
-
         window.draw(rayCasting);
 
         candidates.clear();
+        rotatedLines.clear();
 
         window.display();
     }
