@@ -173,7 +173,35 @@ int main()
             }
         }
 
-        std::cout << "rotatedLines.size() = " << rotatedLines.size() << std::endl;
+        for (auto& point : rotatedLines)
+        {
+            Intersect first = { false, Vec2(0, 0) };
+            for (auto& l : lines)
+            {
+                Intersect intersect = lineIntersect(l.first, l.second, mousePos, point);
+                if (intersect.result)
+                {
+                    if (first.result)
+                    {
+                        Vec2 intersectToMouse = mousePos - intersect.position;
+                        Vec2 firstToMouse = mousePos - first.position;
+                        if (intersectToMouse.length() < firstToMouse.length())
+                        {
+                            first = intersect;
+                        }
+                    }
+                    else
+                    {
+                        first = intersect;
+                    }
+                }
+            }
+
+            if (first.result)
+            {
+                candidates.push_back(first.position);
+            }
+        }
 
         std::sort(candidates.begin(),
                   candidates.end(),
