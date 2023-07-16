@@ -162,12 +162,12 @@ int main()
                 
                     float plusX = std::cos(PI * 0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * 0.00001 / 180.0) * mouseToPoint.y;
                     float plusY = std::sin(PI * 0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * 0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).multiply(100000.0); // TODO: 計算して求めること
+                    Vec2 plusDegree = mousePos + Vec2(plusX, plusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
                     rotatedLines.push_back(plusDegree);
 
                     float minusX = std::cos(PI * -0.00001 / 180.0) * mouseToPoint.x - std::sin(PI * -0.00001 / 180.0) * mouseToPoint.y;
                     float minusY = std::sin(PI * -0.00001 / 180.0) * mouseToPoint.x + std::cos(PI * -0.00001 / 180.0) * mouseToPoint.y;
-                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).multiply(100000.0); // TODO: 計算して求めること
+                    Vec2 minusDegree = mousePos + Vec2(minusX, minusY).normalize().multiply(std::max(window.getSize().x, window.getSize().y));
                     rotatedLines.push_back(minusDegree);
                 }
             }
