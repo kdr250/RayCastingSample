@@ -60,6 +60,16 @@ int main()
     convex.setFillColor(sf::Color::Blue);
     shapes.push_back(&convex);
 
+    points.push_back(Vec2(window.getSize().x * 0, window.getSize().y * 0));
+    points.push_back(Vec2(window.getSize().x * 1, window.getSize().y * 0));
+    points.push_back(Vec2(window.getSize().x * 1, window.getSize().y * 1));
+    points.push_back(Vec2(window.getSize().x * 0, window.getSize().y * 1));
+
+    lines.push_back(std::make_pair(Vec2(window.getSize().x * 0, window.getSize().y * 0), Vec2(window.getSize().x * 1, window.getSize().y * 0)));
+    lines.push_back(std::make_pair(Vec2(window.getSize().x * 1, window.getSize().y * 0), Vec2(window.getSize().x * 1, window.getSize().y * 1)));
+    lines.push_back(std::make_pair(Vec2(window.getSize().x * 1, window.getSize().y * 1), Vec2(window.getSize().x * 0, window.getSize().y * 1)));
+    lines.push_back(std::make_pair(Vec2(window.getSize().x * 0, window.getSize().y * 1), Vec2(window.getSize().x * 0, window.getSize().y * 0)));
+
     for (int i = 0; i < rect.getPointCount(); i++)
     {
         sf::Vector2f point = rect.getTransform().transformPoint(rect.getPoint(i));
@@ -177,7 +187,7 @@ int main()
 
         rayCasting = sf::VertexArray(sf::Triangles, 90);
 
-        for (int i = 0; i < candidates.size() - 1; i++)
+        for (int i = 0; i < candidates.size(); i++) 
         {
             Vec2 pos1 = candidates[i];
             Vec2 pos2 = candidates[(i + 1) % candidates.size()];
