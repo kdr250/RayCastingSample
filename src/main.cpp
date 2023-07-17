@@ -66,6 +66,7 @@ int main()
     std::shared_ptr<sf::CircleShape> triangle = std::make_shared<sf::CircleShape>(50.0f, 3);
     triangle->setFillColor(sf::Color::Blue);
     triangle->setPosition(sf::Vector2f(100.0f, 100.0f));
+    triangle->setRotation(30.0f);
     std::shared_ptr<sf::Shape> triangleShape = std::dynamic_pointer_cast<sf::Shape>(triangle);
     shapes.push_back(triangle);
 
