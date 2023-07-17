@@ -63,6 +63,12 @@ int main()
     std::shared_ptr<sf::Shape> convexShape = std::dynamic_pointer_cast<sf::Shape>(convex);
     shapes.push_back(convexShape);
 
+    std::shared_ptr<sf::CircleShape> triangle = std::make_shared<sf::CircleShape>(50.0f, 3);
+    triangle->setFillColor(sf::Color::Blue);
+    triangle->setPosition(sf::Vector2f(100.0f, 100.0f));
+    std::shared_ptr<sf::Shape> triangleShape = std::dynamic_pointer_cast<sf::Shape>(triangle);
+    shapes.push_back(triangle);
+
     Vec2 windowTopLeft     = Vec2(window.getSize().x * 0, window.getSize().y * 0);
     Vec2 windowTopRight    = Vec2(window.getSize().x * 1, window.getSize().y * 0);
     Vec2 windowBottomRight = Vec2(window.getSize().x * 1, window.getSize().y * 1);
