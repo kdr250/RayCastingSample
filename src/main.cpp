@@ -140,12 +140,10 @@ int main()
                         float maxWindowLength = std::max(window.getSize().x, window.getSize().y);
                         Vec2 mouseToPoint     = position - mousePos;
 
-                        Vec2 plus =
-                            mousePos.rotate(1.0).normalize().multiply(maxWindowLength + 100000.0f);
+                        Vec2 plus = mousePos.rotate(0.1).normalize().multiply(maxWindowLength);
                         rotatedLines.push_back(plus);
 
-                        Vec2 minus =
-                            mousePos.rotate(-1.0).normalize().multiply(maxWindowLength + 10000.0f);
+                        Vec2 minus = mousePos.rotate(-0.1).normalize().multiply(maxWindowLength);
                         rotatedLines.push_back(minus);
                     }
                 }
