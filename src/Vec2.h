@@ -1,5 +1,7 @@
 #pragma once
 
+constexpr auto PI = 3.14159265;
+
 class Vec2
 {
 public:
@@ -28,4 +30,5 @@ public:
 
     Vec2& normalize();
     Vec2& multiply(const float in);
+    Vec2& rotate(const float degree);
 };

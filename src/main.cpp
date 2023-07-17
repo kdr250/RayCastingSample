@@ -4,33 +4,8 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include "RayCastingSystem.h"
 #include "Vec2.h"
-
-constexpr auto PI = 3.14159265;
-
-struct Intersect
-{
-    bool result;
-    Vec2 position;
-};
-
-Intersect lineIntersect(Vec2& a, Vec2& b, Vec2& c, Vec2& d)
-{
-    Vec2 r    = b - a;
-    Vec2 s    = d - c;
-    float rxs = r.crossProduct(s);
-    Vec2 cma  = c - a;
-    float t   = cma.crossProduct(s) / rxs;
-    float u   = cma.crossProduct(r) / rxs;
-    if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
-    {
-        return {true, Vec2(a.x + t * r.x, a.y + t * r.y)};
-    }
-    else
-    {
-        return {false, Vec2(0.0f, 0.0f)};
-    }
-}
 
 int main()
 {
@@ -68,7 +43,7 @@ int main()
     triangle->setPosition(sf::Vector2f(100.0f, 100.0f));
     triangle->setRotation(30.0f);
     std::shared_ptr<sf::Shape> triangleShape = std::dynamic_pointer_cast<sf::Shape>(triangle);
-    shapes.push_back(triangle);
+    shapes.push_back(triangleShape);
 
     Vec2 windowTopLeft     = Vec2(window.getSize().x * 0, window.getSize().y * 0);
     Vec2 windowTopRight    = Vec2(window.getSize().x * 1, window.getSize().y * 0);
@@ -132,7 +107,8 @@ int main()
             Intersect first = {false, Vec2(0, 0)};
             for (auto& l : lines)
             {
-                Intersect intersect = lineIntersect(l.first, l.second, mousePos, point);
+                Intersect intersect =
+                    RayCastingSystem::lineIntersect(l.first, l.second, mousePos, point);
                 if (intersect.result)
                 {
                     if (first.result)
@@ -161,29 +137,16 @@ int main()
                     if (point != windowTopLeft && point != windowTopRight
                         && point != windowBottomRight && point != windowBottomLeft)
                     {
-                        Vec2 mouseToPoint = position - mousePos;
+                        float maxWindowLength = std::max(window.getSize().x, window.getSize().y);
+                        Vec2 mouseToPoint     = position - mousePos;
 
-                        float plusX = std::cos(PI * 0.001 / 180.0) * mouseToPoint.x
-                                      - std::sin(PI * 0.001 / 180.0) * mouseToPoint.y;
-                        float plusY = std::sin(PI * 0.001 / 180.0) * mouseToPoint.x
-                                      + std::cos(PI * 0.001 / 180.0) * mouseToPoint.y;
-                        Vec2 plusDegree =
-                            mousePos
-                            + Vec2(plusX, plusY)
-                                  .normalize()
-                                  .multiply(std::max(window.getSize().x, window.getSize().y));
-                        rotatedLines.push_back(plusDegree);
+                        Vec2 plus =
+                            mousePos.rotate(1.0).normalize().multiply(maxWindowLength + 100000.0f);
+                        rotatedLines.push_back(plus);
 
-                        float minusX = std::cos(PI * -0.001 / 180.0) * mouseToPoint.x
-                                       - std::sin(PI * -0.001 / 180.0) * mouseToPoint.y;
-                        float minusY = std::sin(PI * -0.001 / 180.0) * mouseToPoint.x
-                                       + std::cos(PI * -0.001 / 180.0) * mouseToPoint.y;
-                        Vec2 minusDegree =
-                            mousePos
-                            + Vec2(minusX, minusY)
-                                  .normalize()
-                                  .multiply(std::max(window.getSize().x, window.getSize().y));
-                        rotatedLines.push_back(minusDegree);
+                        Vec2 minus =
+                            mousePos.rotate(-1.0).normalize().multiply(maxWindowLength + 10000.0f);
+                        rotatedLines.push_back(minus);
                     }
                 }
             }
@@ -194,7 +157,8 @@ int main()
             Intersect first = {false, Vec2(0, 0)};
             for (auto& l : lines)
             {
-                Intersect intersect = lineIntersect(l.first, l.second, mousePos, point);
+                Intersect intersect =
+                    RayCastingSystem::lineIntersect(l.first, l.second, mousePos, point);
                 if (intersect.result)
                 {
                     if (first.result)

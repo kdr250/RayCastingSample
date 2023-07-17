@@ -88,3 +88,10 @@ Vec2& Vec2::multiply(const float in)
     y *= in;
     return *this;
 }
+
+Vec2& Vec2::rotate(const float degree)
+{
+    float rotatedX = std::cos(PI * degree / 180.0) * x - std::sin(PI * degree / 180.0) * y;
+    float rotatedY = std::sin(PI * degree / 180.0) * x + std::cos(PI * degree / 180.0) * y;
+    return Vec2(rotatedX, rotatedY);
+}
