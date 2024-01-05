@@ -30,5 +30,5 @@ public:
 
     Vec2& normalize();
     Vec2& multiply(const float in);
-    Vec2& rotate(const float degree);
+    Vec2 rotate(const float degree);
 };
